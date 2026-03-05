@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Portal | NexHire</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Inter:wght@400;500;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        .jobs-container {
+            padding: 120px 10%;
+        }
+
+        .search-box {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 50px;
+        }
+
+        .search-box input {
+            flex: 1;
+            padding: 15px 25px;
+            border-radius: 12px;
+            border: 1px solid var(--glass-border);
+            background: var(--glass);
+            color: white;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .search-box input:focus {
+            border-color: var(--primary);
+        }
+
+        .job-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        .job-card {
+            padding: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: transform 0.3s;
+        }
+
+        .job-card:hover {
+            transform: translateX(10px);
+        }
+
+        .job-info h3 {
+            font-size: 1.4rem;
+            margin-bottom: 8px;
+        }
+
+        .job-meta {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            display: flex;
+            gap: 20px;
+        }
+
+        .job-meta i {
+            color: var(--primary);
+            margin-right: 5px;
+        }
+
+        .salary {
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .tags {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .tag {
+            padding: 4px 12px;
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: var(--primary);
+        }
+    </style>
+</head>
+
+<body>
+    <nav id="navbar" class="scrolled">
+        <div class="logo gradient-text">NexHire</div>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="jobs.html">Jobs</a>
+            <a href="prep.html">Preparation</a>
+            <a href="company.html">Company Info</a>
+            <a href="index.html#start" class="btn-primary" style="padding: 10px 20px; margin-left: 20px;">Register</a>
+        </div>
+    </nav>
+
+    <div class="jobs-container">
+        <h1 class="gradient-text" style="font-size: 3rem; margin-bottom: 30px;">Find Your Next Role</h1>
+
+        <div class="search-box">
+            <input type="text" id="jobSearch" placeholder="Search roles, companies, or skills...">
+            <button class="btn-primary">Search</button>
+        </div>
+
+        <div class="job-grid" id="jobGrid">
+            <!-- Job cards will be rendered here via main.js -->
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script>
+        // Mock Job Data
+        const jobs = [
+            { title: "Software Engineer", company: "Google", location: "Mountain View, CA", salary: "$150k - $220k", tags: ["Remote", "Full-time"] },
+            { title: "Frontend Developer", company: "Vercel", location: "San Francisco, CA", salary: "$130k - $180k", tags: ["Next.js", "Contract"] },
+            { title: "Data Analyst", company: "Netflix", location: "Los Gatos, CA", salary: "$140k - $200k", tags: ["Python", "SQL"] },
+            { title: "Product Designer", company: "Airbnb", location: "Remote", salary: "$120k - $170k", tags: ["UI/UX", "Figma"] }
+        ];
+
+        function renderJobs(filter = '') {
+            const grid = document.getElementById('jobGrid');
+            grid.innerHTML = '';
+
+            const filteredJobs = jobs.filter(job =>
+                job.title.toLowerCase().includes(filter.toLowerCase()) ||
+                job.company.toLowerCase().includes(filter.toLowerCase())
+            );
+
+            filteredJobs.forEach(job => {
+                const card = document.createElement('div');
+                card.className = 'job-card glass fade-in';
+                card.innerHTML = `
+                    <div class="job-info">
+                        <h3>${job.title}</h3>
+                        <div class="job-meta">
+                            <span><i class="fas fa-building"></i> ${job.company}</span>
+                            <span><i class="fas fa-map-marker-alt"></i> ${job.location}</span>
+                            <span class="salary">${job.salary}</span>
+                        </div>
+                        <div class="tags">
+                            ${job.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                        </div>
+                    </div>
+                    <a href="#" class="btn-primary" style="padding: 10px 20px;">Apply Now</a>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        document.getElementById('jobSearch').addEventListener('input', (e) => {
+            renderJobs(e.target.value);
+        });
+
+        renderJobs();
+    </script>
+</body>
+
+</html>
